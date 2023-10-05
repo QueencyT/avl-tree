@@ -37,7 +37,10 @@ void rotate_right(tree_node<T>*& root){
 template<typename T> 
 void rotate_mirror_right(tree_node<T>*& root){
     if(root){
+        rotate_left(root->_right); 
+        rotate_right(root);  
         
+        /*
         tree_node<T>* oldRoot = root; //3 
         root = root->_right->_left; // root is now 4
 
@@ -46,6 +49,8 @@ void rotate_mirror_right(tree_node<T>*& root){
        
         oldRoot->_right = root->_left; 
         root->_left = oldRoot;  
+        */
+        
     } //working so far
 }
 
@@ -53,8 +58,10 @@ void rotate_mirror_right(tree_node<T>*& root){
 template<typename T> 
 void rotate_mirror_left(tree_node<T>*& root){
     if(root){
-       // rotate_right(root->_left); 
-        //rotate_left(root);
+        rotate_right(root->_left); 
+        rotate_left(root);
+
+        /*
         tree_node<T>* oldRoot = root; 
         root = root->_left->_right; 
 
@@ -62,7 +69,9 @@ void rotate_mirror_left(tree_node<T>*& root){
         root->_left = oldRoot->_left;    
 
         oldRoot->_left = root->_right; 
-        root->_right = oldRoot; 
+        root->_right = oldRoot;  
+        */
+        
     }//should work
 
     //how about heights after we rotate? 
@@ -72,29 +81,29 @@ template<typename T>
 void rotate(tree_node<T>*& root){
     tree_node<T>* oldRoot = root; 
     if(root){
-        if(root->balance_factor() == 2 && root->_right && root->_right->balance_factor() == -1){//leaning heavy left but also right
-            //cout<<"leaning heavy left but also right\n";
-            //cout<<"in order before rotate: "<<in_order_string(root)<<endl; 
+        if(root->balance_factor() == 2 && root->_left && root->_left->balance_factor() == -1){//leaning heavy left but also right
+            cout<<"leaning heavy left but also right\n";
+            cout<<"in order before rotate: "<<in_order_string(root)<<endl; 
             rotate_mirror_left(root); 
-           // cout<<"in order after rotate: "<<in_order_string(root)<<endl; 
+            cout<<"in order after rotate: "<<in_order_string(root)<<endl; 
         }
-        else if(root->balance_factor() == -2 && root->_left && root->_left->balance_factor() == 1){//leaning heavu right but also left
-           // cout<<"leaning heavy right but also left\n";
-            //cout<<"in order before rotate: "<<in_order_string(root)<<endl;
+        else if(root->balance_factor() == -2 && root->_right && root->_right->balance_factor() == 1){//leaning heavu right but also left
+            cout<<"leaning heavy right but also left\n";
+            cout<<"in order before rotate: "<<in_order_string(root)<<endl;
             rotate_mirror_right(root); 
-            //cout<<"in order after rotate: "<<in_order_string(root)<<endl;
+            cout<<"in order after rotate: "<<in_order_string(root)<<endl;
         }
         else if(root->balance_factor() == 2){ //leaning left 
-            //cout<<"leaning left\n";
-            //cout<<"in order before rotate: "<<in_order_string(root)<<endl;
+            cout<<"leaning left\n";
+            cout<<"in order before rotate: "<<in_order_string(root)<<endl;
             rotate_left(root); 
-            //cout<<"in order after rotate: "<<in_order_string(root)<<endl; 
+            cout<<"in order after rotate: "<<in_order_string(root)<<endl; 
         }
         else if(root->balance_factor() == -2){//leaning right
-            //cout<<"leaning right\n";
-            //cout<<"in order before rotate: "<<in_order_string(root)<<endl;
+            cout<<"leaning right\n";
+            cout<<"in order before rotate: "<<in_order_string(root)<<endl;
             rotate_right(root); 
-            //cout<<"in order after rotate: "<<in_order_string(root)<<endl; 
+            cout<<"in order after rotate: "<<in_order_string(root)<<endl; 
         }
     }
     oldRoot->update_height(); 
@@ -133,10 +142,6 @@ bool tree_search(tree_node<T>* root, const T& target, tree_node<T>* &found_ptr){
 
 template <typename T>
 void tree_insert(tree_node<T>* &root, const T& insert_me){
-    if(root){
-        //cout<<"root: "<<root->_item<<endl; 
-       // cout<<"insert: "<<insert_me<<endl;  
-    }
 
     if(root == NULL){
         root = new tree_node<T>(insert_me); //should be null left and right //shouldn't matter that it's null since we are inserting to null space 
@@ -149,10 +154,8 @@ void tree_insert(tree_node<T>* &root, const T& insert_me){
     }
     else{
         tree_insert(root->_right, insert_me); 
-    }
-    //cout<<"entering: root: "<<root->_item<<endl; 
+    }  
     rotate(root);
-   // cout<<"exiting: root: "<<root->_item<<endl;  
     root->update_height(); 
     //DONT FORGET TO UPDATE HEIGHT --> MUST ASK TOMORROW --> update height recursively when we go back 
 }
@@ -347,7 +350,7 @@ template <typename T> //Add tree src to dest //add?
 void tree_add(tree_node<T>* & dest, const tree_node<T>* src){ ///so far working
     //assuming dest is pretty well sorted?? hm
     
-    if(dest == NULL && src){ //src == null, but dest != null
+    if(dest == NULL && src){ //src != null, but dest == null
         tree_add(dest, src->_left); 
         tree_insert(dest, src->_item); 
         tree_add(dest, src->_right); 
