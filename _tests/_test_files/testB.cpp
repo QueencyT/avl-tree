@@ -138,22 +138,20 @@ bool test_quick(bool debug){
   //0 0 1 2 3 4 4 5 6 7 8 8 9 10 11 12 12 13 14 15 16 16 17 18 19 20 20 21 22 23 24 24 25 26 27 28 28 29 30 31 
 
   if(debug){
-    int a[] = {48,50,72,34,18,10,52,72,80,92,50,28,36,66,42,90,12,46,48,34,98,74,38,60,94,36,40,62,26,54,28,88,68,14,46,44,54,88,58,62,52,36,26,48,64,78,18,94,94,78}; 
-    AVL<int> avl(a, 50); 
-    AVL<int> avl2(avl); 
+    int a[] = {62, 18, 72, 10, 34, 38, 28, 80, 56, 52, 62, 32, 92, 62, 90, 78, 56, 30, 60, 26, 72, 38, 94, 60, 16, 66, 90, 28, 74, 70, 84, 26, 44, 36, 34, 28, 74, 80, 90, 72, 56, 80, 24, 48, 84, 62, 22, 94, 18, 66};
+    tree_node<int>* mTree = NULL; 
 
-    cout<<"AVL1: \n"; 
-    cout<<avl<<endl; 
+    for(int i = 0; i < 50; i++){
+      tree_insert(mTree, a[i]); 
+    } 
 
-    cout<<"AVL2: \n"; 
-    cout<<avl2<<endl; 
+    cout<<"in order: "<<in_order_string(mTree)<<endl;
+    cout<<"post order: "<<post_order_string(mTree)<<endl; 
+    cout<<"pre order: "<<pre_order_string(mTree)<<endl; 
+   // AVL<int> avl(a, 50); 
+    //AVL<int> avl2(avl); 
 
-    cout<<"here\n"; 
-
-    cout<<"pre order: "<<avl.pre_order()<<endl; 
-    cout<<"post order: "<<avl.post_order()<<endl; 
-    cout<<"in order: "<<avl.in_order()<<endl; 
-    //tree_print_debug(mRoot, 0, cout); 
+    
   }
 }
 

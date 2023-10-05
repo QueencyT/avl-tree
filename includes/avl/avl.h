@@ -81,6 +81,7 @@ public:
     }
 
     friend ostream& operator <<(ostream& outs, const AVL<T>& tree){
+        tree_print_debug(tree._root,0,outs); 
         tree_print(tree._root, 0, outs);
         return outs;
     }

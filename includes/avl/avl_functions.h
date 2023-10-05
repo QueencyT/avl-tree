@@ -17,7 +17,10 @@ void rotate_left(tree_node<T>*& root){
         tree_node<T>* temp = root; //3
         root = root->_left;  // 2
         temp->_left = root->_right;  
-        root->_right = temp; 
+        root->_right = temp;
+
+        root->_right->update_height(); 
+        root->update_height(); 
     }
     //should be fine?
 }
@@ -29,7 +32,10 @@ void rotate_right(tree_node<T>*& root){
         tree_node<T>* temp = root; 
         root = root->_right; 
         temp->_right = root->_left; 
-        root->_left = temp;   
+        root->_left = temp; 
+
+        root->_left->update_height(); 
+        root->update_height(); 
     }
 } //needs further testing 
 
@@ -39,18 +45,6 @@ void rotate_mirror_right(tree_node<T>*& root){
     if(root){
         rotate_left(root->_right); 
         rotate_right(root);  
-        
-        /*
-        tree_node<T>* oldRoot = root; //3 
-        root = root->_right->_left; // root is now 4
-
-        oldRoot->_right->_left = root->_right; 
-        root->_right = oldRoot->_right; //should be correct
-       
-        oldRoot->_right = root->_left; 
-        root->_left = oldRoot;  
-        */
-        
     } //working so far
 }
 
@@ -58,55 +52,41 @@ void rotate_mirror_right(tree_node<T>*& root){
 template<typename T> 
 void rotate_mirror_left(tree_node<T>*& root){
     if(root){
-        rotate_right(root->_left); 
+        rotate_right(root->_left);
         rotate_left(root);
-
-        /*
-        tree_node<T>* oldRoot = root; 
-        root = root->_left->_right; 
-
-        oldRoot->_left->_right = root->_left; 
-        root->_left = oldRoot->_left;    
-
-        oldRoot->_left = root->_right; 
-        root->_right = oldRoot;  
-        */
-        
     }//should work
-
-    //how about heights after we rotate? 
 }
 
 template<typename T>
 void rotate(tree_node<T>*& root){
-    tree_node<T>* oldRoot = root; 
+    //root->update_height();
     if(root){
         if(root->balance_factor() == 2 && root->_left && root->_left->balance_factor() == -1){//leaning heavy left but also right
-            cout<<"leaning heavy left but also right\n";
-            cout<<"in order before rotate: "<<in_order_string(root)<<endl; 
+           // cout<<"leaning heavy left but also right\n";
+            //cout<<"in order before rotate: "<<in_order_string(root)<<endl; 
             rotate_mirror_left(root); 
-            cout<<"in order after rotate: "<<in_order_string(root)<<endl; 
+           // cout<<"in order after rotate: "<<in_order_string(root)<<endl; 
         }
         else if(root->balance_factor() == -2 && root->_right && root->_right->balance_factor() == 1){//leaning heavu right but also left
-            cout<<"leaning heavy right but also left\n";
-            cout<<"in order before rotate: "<<in_order_string(root)<<endl;
+            //cout<<"leaning heavy right but also left\n";
+            //cout<<"in order before rotate: "<<in_order_string(root)<<endl;
             rotate_mirror_right(root); 
-            cout<<"in order after rotate: "<<in_order_string(root)<<endl;
+            //cout<<"in order after rotate: "<<in_order_string(root)<<endl;
         }
         else if(root->balance_factor() == 2){ //leaning left 
-            cout<<"leaning left\n";
-            cout<<"in order before rotate: "<<in_order_string(root)<<endl;
+           // cout<<"leaning left\n";
+            //cout<<"in order before rotate: "<<in_order_string(root)<<endl;
             rotate_left(root); 
-            cout<<"in order after rotate: "<<in_order_string(root)<<endl; 
+            //cout<<"in order after rotate: "<<in_order_string(root)<<endl; 
         }
         else if(root->balance_factor() == -2){//leaning right
-            cout<<"leaning right\n";
-            cout<<"in order before rotate: "<<in_order_string(root)<<endl;
+           // cout<<"leaning right\n";
+           // cout<<"in order before rotate: "<<in_order_string(root)<<endl;
             rotate_right(root); 
-            cout<<"in order after rotate: "<<in_order_string(root)<<endl; 
+            //cout<<"in order after rotate: "<<in_order_string(root)<<endl; 
         }
     }
-    oldRoot->update_height(); 
+   
 }
 
 template <typename T>
@@ -155,9 +135,8 @@ void tree_insert(tree_node<T>* &root, const T& insert_me){
     else{
         tree_insert(root->_right, insert_me); 
     }  
-    rotate(root);
     root->update_height(); 
-    //DONT FORGET TO UPDATE HEIGHT --> MUST ASK TOMORROW --> update height recursively when we go back 
+    rotate(root);
 }
 
 //let's do this first 
