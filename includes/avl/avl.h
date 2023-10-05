@@ -26,7 +26,7 @@ public:
         }
 
         tree_clear(_root); 
-        _root = tree_copy(rhs->_root); 
+        _root = tree_copy(rhs._root); 
         return *this; 
     }
     ~AVL(){
